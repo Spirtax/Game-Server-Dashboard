@@ -1,0 +1,96 @@
+.create-modal-container {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.create-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-icon-container {
+  background: var(--bg-inner-card);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.header-text h1 {
+  font-size: 20px;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.header-text p {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 4px 0 0 0;
+}
+
+.modal-divider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 0;
+}
+
+.create-modal-body {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.span-1 {
+  grid-column: span 1;
+}
+
+.span-2 {
+  grid-column: span 2;
+}
+
+.input-group label {
+  display: block;
+  font-size: 12px;
+  color: var(--text-primary);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.required {
+  color: var(--bg-button);
+  margin-left: 4px;
+}
+
+.create-modal-footer {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.delete-button {
+  background: rgba(255, 77, 77, 0.1) !important;
+  color: #ff4d4d !important;
+  border: 1px solid rgba(255, 77, 77, 0.2) !important;
+}
+
+.delete-button:hover {
+  background: #ff4d4d !important;
+  color: white !important;
+}
+
+.cancel-button {
+  background: transparent !important;
+  color: var(--bg-button-cancel) !important;
+}
+
+.cancel-button:hover {
+  color: var(--bg-button-cancel-hover) !important;
+}
+
+.create-button-container {
+  background: var(--bg-button) !important;
+  color: white !important;
+}

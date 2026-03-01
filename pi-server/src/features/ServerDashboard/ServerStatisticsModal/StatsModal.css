@@ -1,0 +1,53 @@
+.stats-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.stats-content {
+  height: 68px;
+}
+
+.stats-container {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin: 16px 0;
+}
+
+.stats-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.stats-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  height: 42px;
+  overflow: hidden;
+}
+
+.stats-title h1 {
+  font-size: 1.75rem;
+  margin-right: 4px;
+}
+
+hr {
+  margin: 8px -8px;
+}
+
+.stats-grid {
+  display: grid;
+  place-items: center;
+  margin-top: 16px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 1fr;
+  grid-auto-columns: 1fr;
+  gap: 16px;
+}
+
+.long-card {
+  height: 100% !important;
+}

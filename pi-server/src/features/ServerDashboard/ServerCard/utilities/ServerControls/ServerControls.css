@@ -1,0 +1,97 @@
+.control-buttons {
+  height: 25%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.control-buttons > :first-child {
+  margin-left: 8px;
+}
+
+.control-buttons div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.control-buttons svg {
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+
+  height: 28px;
+  width: 28px;
+
+  transition:
+    transform 0.2s ease,
+    background-color 0.25s ease;
+}
+
+.control-buttons svg:hover {
+  cursor: pointer;
+  transform: scale(1.075);
+}
+
+.server-button {
+  color: white;
+  gap: 3px;
+  padding: 3px 12px;
+  margin-right: 4px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.server-button.offline {
+  background: #2abb43;
+}
+
+.server-button.offline:hover {
+  box-shadow: 0 0 0 1px #2abb43;
+}
+
+.server-button.starting {
+  background: #ffaa00;
+  cursor: not-allowed;
+}
+
+.server-button.starting:hover {
+  box-shadow: 0 0 0 1px #ffaa00;
+}
+
+.server-button.online {
+  background: #ff4d4d;
+}
+
+.server-button.online:hover {
+  box-shadow: 0 0 0 1px #ff4d4d;
+}
+
+.server-button.stopping {
+  background: #d35400;
+  cursor: not-allowed;
+}
+
+.server-button.stopping:hover {
+  box-shadow: 0 0 0 1px #d35400;
+}
+
+.server-button.restarting {
+  background: linear-gradient(90deg, #ffaa00, #ffcc00);
+  cursor: not-allowed;
+}
+
+.server-button.restarting:hover {
+  box-shadow: 0 0 0 1px #ffaa00;
+}
+
+.server-button:disabled {
+  opacity: 0.7;
+}

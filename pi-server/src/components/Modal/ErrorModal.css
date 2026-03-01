@@ -1,0 +1,57 @@
+.error-modal-wrapper {
+  padding: 2rem;
+  text-align: center;
+}
+
+.error-modal-body {
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.error-icon-container {
+  margin-bottom: 0.5rem;
+}
+
+.error-circle {
+  width: 50px;
+  height: 50px;
+  border: 3px solid #ff4d4d;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff4d4d;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.error-title {
+  margin: 0;
+  color: #fff;
+  font-size: 1.25rem;
+  letter-spacing: 0.5px;
+}
+
+.error-message {
+  color: #a0a0a0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.error-close-btn {
+  margin-top: 1rem;
+  background: rgba(255, 77, 77, 0.1);
+  border: 1px solid #ff4d4d;
+  color: #ff4d4d;
+  padding: 0.6rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.error-close-btn:hover {
+  background: #ff4d4d;
+  color: #fff;
+}

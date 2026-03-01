@@ -1,0 +1,111 @@
+.settings-modal-container {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.settings-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-text h1 {
+  font-size: 24px !important;
+}
+
+.header-icon-container {
+  background: var(--bg-inner-card);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.modal-divider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 0;
+}
+
+.settings-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin: 0 32px;
+}
+
+.settings-top-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 32px;
+  align-items: flex-end;
+}
+
+.slider-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.slider-label {
+  font-size: 12px;
+  color: var(--text-primary);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.game-settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.settings-section-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  opacity: 0.8;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 8px;
+}
+
+.game-specific-settings {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.settings-modal-footer {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.footer-right-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.delete-button {
+  background: rgba(255, 77, 77, 0.1) !important;
+  color: #ff4d4d !important;
+  border: 1px solid rgba(255, 77, 77, 0.2) !important;
+}
+
+.delete-button:hover {
+  background: #ff4d4d !important;
+  color: white !important;
+}
+
+.cancel-button {
+  background: transparent !important;
+  color: var(--text-muted) !important;
+}
+
+.settings-button-container {
+  background: var(--bg-button) !important;
+  color: white !important;
+}

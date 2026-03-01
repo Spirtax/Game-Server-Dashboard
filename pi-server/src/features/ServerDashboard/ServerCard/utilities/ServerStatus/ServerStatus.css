@@ -1,0 +1,72 @@
+.server-status {
+  flex-direction: row;
+  margin-top: 8px;
+  gap: 4px;
+}
+
+.status-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.status-desc {
+  margin-bottom: 2px;
+}
+
+.online .status-dot {
+  background: #2abb43;
+  box-shadow:
+    0 0 2px #33d14e,
+    0 0 4px #33d14e;
+}
+.online .status-desc {
+  color: #2abb43;
+}
+
+.offline .status-dot {
+  background: #ff4d4d;
+  box-shadow:
+    0 0 2px #ff6666,
+    0 0 4px #ff6666;
+}
+.offline .status-desc {
+  color: #ff4d4d;
+}
+
+.stopping .status-dot {
+  background: #d35400;
+  box-shadow:
+    0 0 2px #dc5e0b,
+    0 0 4px #dc5e0b;
+  animation: pulse 1.5s infinite;
+}
+.stopping .status-desc {
+  color: #d35400;
+}
+
+.starting .status-dot,
+.restarting .status-dot {
+  background: #ffaa00;
+  box-shadow:
+    0 0 2px #ffcc00,
+    0 0 4px #ffcc00;
+  animation: pulse 1.5s infinite;
+}
+.starting .status-desc,
+.restarting .status-desc {
+  color: #ffaa00;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}

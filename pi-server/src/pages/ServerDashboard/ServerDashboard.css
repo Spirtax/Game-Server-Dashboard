@@ -1,0 +1,8 @@
+.server-grid {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fill, var(--server-card-size));
+  gap: 48px;
+  width: 100%;
+  margin: 64px 0;
+}

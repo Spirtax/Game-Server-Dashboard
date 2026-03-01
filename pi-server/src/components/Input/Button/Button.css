@@ -1,0 +1,29 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--bg-button);
+  color: white;
+  font-weight: 500;
+
+  transition: all 0.3s ease;
+}
+
+.button:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.button:disabled {
+  background-color: var(--bg-button-disabled);
+  color: var(--bg-button-disabled-text);
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none;
+}

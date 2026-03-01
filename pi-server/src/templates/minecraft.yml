@@ -1,0 +1,15 @@
+services:
+  {{CONTAINER_NAME}}:
+    container_name: {{CONTAINER_NAME}}
+    image: itzg/minecraft-server
+    mem_limit: {{RAM}}M
+    ports:
+      - "25565:25565"
+    environment:
+      EULA: "TRUE"
+      TYPE: "{{TYPE}}"
+      VERSION: "{{VERSION}}"
+      MEMORY: "{{RAM}}M"
+    volumes:
+      - ./data:/data
+    restart: unless-stopped

@@ -1,0 +1,25 @@
+services:
+  {{CONTAINER_NAME}}:
+    image: "satisfactory-arm64"
+    container_name: {{CONTAINER_NAME}}
+    ports:
+      - "7777:7777/udp"
+      - "7777:7777/tcp"
+      - "8888:8888/tcp"
+    restart: "unless-stopped"
+    deploy:
+      resources:
+        limits:
+          memory: {{RAM}}M
+        reservations:
+          memory: {{RAM}}M
+    environment:
+      - EXTRA_PARAMS=-log -unattended -NetServerMaxTickRate=30 -ini:Engine:[/Script/OnlineSubsystemUtils.IpNetDriver]:InitialConnectionTimeout=300.0
+      - ALWAYS_UPDATE_ON_START=true
+    volumes:
+      - "./satisfactory:/satisfactory"
+      - "./config:/home/steam/.config/Epic"
+      - "./init-server.sh:/home/steam/init-server.sh:rw"
+    stdin_open: true
+    tty: true
+    entrypoint: /home/steam/init-server.sh

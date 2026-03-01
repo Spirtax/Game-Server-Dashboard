@@ -1,0 +1,113 @@
+.sidebar.mini {
+  display: flex;
+  flex-direction: column;
+  width: 70px;
+  height: 100vh;
+  background-color: var(--bg-sidebar);
+  border-right: 2.5px solid var(--border);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.sidebar-nav {
+  flex-direction: column;
+  height: 100%;
+}
+
+.nav-group {
+  width: 100%;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+@media (min-width: 1440px) {
+  .nav-list {
+    gap: 32px;
+  }
+}
+
+.nav-item-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.nav-link {
+  width: 48px;
+  height: 48px;
+  color: #94a3b8;
+  text-decoration: none;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover Animation */
+.nav-link:hover {
+  background-color: var(--sidebar-hover-background);
+  color: var(--sidebar-hover);
+  transform: scale(1.1);
+}
+
+.nav-link.active {
+  background-color: var(--sidebar-hover-background);
+  color: var(--text-primary);
+}
+
+.nav-tooltip {
+  position: absolute;
+  left: 80px;
+  background-color: var(--sidebar-hover-background);
+  color: var(--text-primary);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+  transform: translateX(-10px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.nav-tooltip::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  background-color: var(--sidebar-hover-background);
+}
+
+.nav-item-container:hover .nav-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+.main-content {
+  margin-left: 70px;
+  padding: 20px;
+}
+
+@media (prefers-color-scheme: light) {
+  .nav-link {
+    color: black;
+  }
+}

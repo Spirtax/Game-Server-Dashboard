@@ -1,0 +1,99 @@
+.custom-input-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+}
+
+.custom-input-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary, #ffffff);
+  margin-bottom: 9.5px;
+}
+
+.custom-input-required {
+  color: var(--bg-button);
+  margin-left: 4px;
+}
+
+.custom-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.custom-input-field {
+  width: 100%;
+  padding: 10px 12px;
+  padding-right: 36px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: var(--bg-inner-card);
+  color: var(--text-primary, #ffffff);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.custom-input-field:focus {
+  border-color: var(--primary-color, #007bff);
+}
+
+.custom-input-field.custom-input-error {
+  border-color: #ff4d4d !important;
+}
+
+.custom-input-error-icon {
+  position: absolute;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-input-error-icon::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 140%;
+  top: 50%;
+  transform: translateY(-50%) translateX(10px);
+  background: #ff4d4d;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  z-index: 1000;
+  pointer-events: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.custom-input-error-icon::before {
+  content: "";
+  position: absolute;
+  left: 110%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent #ff4d4d transparent transparent;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.custom-input-error-icon:hover::after,
+.custom-input-error-icon:hover::before {
+  opacity: 1;
+}
+
+.custom-input-error-icon:hover::after {
+  transform: translateY(-50%) translateX(0);
+}

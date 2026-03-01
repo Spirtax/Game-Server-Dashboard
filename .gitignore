@@ -1,0 +1,35 @@
+# --- Security ---
+.env
+*.key
+*.cert
+*.pem
+
+# --- Node.js ---
+node_modules/
+dist/
+dist-ssr/
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- Game Servers Data ---
+# Ignore all sub-contents of servers
+/servers/**/*
+
+# Allow the .gitkeep files so the folders exist on GitHub
+!/servers/**/.gitkeep
+
+# Specifically block large game binaries if they leak through
+*.sav
+*.bin
+*.exe
+FactoryGame/
+Engine/
+
+# --- Editor & System ---
+.vscode/
+.vscode-server/
+.idea/
+.DS_Store
+*.sw?
