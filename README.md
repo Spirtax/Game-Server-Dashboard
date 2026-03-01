@@ -1,19 +1,5 @@
 # Game Server Dashboard
 
-## TODO
-
-If there are no servers, display in the dashboard that there's none.
-
-Add the settings modal (For deleting the modal, editing things about it like name, ram usage, cpu limits, backups, etc.)
-
-Add a way to set the port for the server so we can have 2 servers running at once
-
-Server card doesnt have default "extra info", it expects the server to have a version and player count.
-
-In the minecraft provider, add a fetch for server.properties, and change the player count to fetch max-players there. This will also allow us to change its motd.
-
----
-
 ## Project Overview
 
 The goal of this project is to allow for easily creatable multiplayer game servers by only needing a docker container for the game. The framework is a modular, Docker-centric management layer built with a Node.js backend and a React frontend.
@@ -126,3 +112,15 @@ In addition to this, if the system is running on **ARM64** (such as a Raspberry 
    ```
    getconf PAGESIZE
    ```
+
+## Future Implementation and Bug Fixes
+
+If there are no servers, there should be text saying "No servers".
+
+Adding functionality to the settings modal.
+
+Add a way to set the port for the server so we can have 2 servers running at once
+
+In the minecraft provider, add a fetch for server.properties, and change the player count to fetch max-players there. This will also allow us to change its motd and other server properties inside the settings modal when its implemented.
+
+---
