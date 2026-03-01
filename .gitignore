@@ -16,6 +16,7 @@ yarn-error.log*
 # --- Game Servers Data ---
 # Ignore all sub-contents of servers
 /servers/**/*
+pi-server/src/services/data/server_config.json
 
 # Allow the .gitkeep files so the folders exist on GitHub
 !/servers/**/.gitkeep
