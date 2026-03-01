@@ -156,6 +156,8 @@ In order to actually join some servers, there is a little configuration on your 
 
 For Java, Minecraft requires the **25565 (TCP)** port to be open, and for Bedrock is requires the **19132 (UDP)** port
 
+Also ensure that you have downloaded java on the system running the server or it won't run correctly.
+
 ### Satisfactory
 
 Satisfactory requires **7777 (TCP/UDP)** and **8888 (TCP)** ports to be open.
