@@ -2,14 +2,68 @@
 
 ## Project Overview
 
-The goal of this project is to allow for easily creatable multiplayer game servers by only needing a docker container for the game. The framework is a modular, Docker-centric management layer built with a Node.js backend and a React frontend.
+The goal of this project is to allow for easily creatable multiplayer game servers by only needing a docker compose file for the game. The framework is a modular, Docker-centric management layer built with a Node.js backend and a React frontend.
 
-- **Automated Discovery**: Monitors the `/servers` directory and Docker socket for automatic registration.
+**_*At the current moment, this project is aimed to work with ARM64 architecture (Such as a Raspberry pi). Future implementations will include x86_64, since lots of game servers are not designed for ARM64.*_**
+
+Currently, this project supports Minecraft and Satisfactory server deployments. While the system was originally architected for Minecraft, the recent addition of Satisfactory demonstrates the modular design of the platform. New game servers can be integrated easily by simply dropping in a standard Docker template, which can usually be found by looking online.
+
+- **Automated Discovery**: Monitors the `/servers` directory and Docker socket for an automatic server display.
 - **Protocol Translation**: Uses the **Provider Pattern** to map generic containers to game-specific logic (RCON, Query, etc.).
-- **Persistence & State**: Maintains a **Single Source of Truth (SSOT)** via `server_config.json`.
-- **Dynamic UI Rendering**: Utilizes a **Factory Pattern** to inject specialized React components based on `gameType`.
+- **Persistence & State**: Maintains a **Single Source of Truth (SSOT)** architecture via `server_config.json`.
+- **Dynamic UI Rendering**: Utilizes a **Factory Pattern** to inject specialized React components based on a `gameType`.
 
----
+## Running the Program
+
+Since this project is a Full-Stack application designed to manage Docker containers, you need to ensure your environment is prepared before starting the development server.
+
+### 1. Prerequisites
+
+Ensure you have the following installed on your Raspberry Pi:
+
+- **Node.js** (v18 or higher recommended)
+- **npm**
+- **Docker** and **Docker Compose**
+- **Git**
+
+### 2. Installation
+
+Clone the repository and install the necessary dependencies for both the frontend and backend:
+
+```bash
+# Clone the repository
+git clone [https://github.com/username/repo-name.git](https://github.com/username/repo-name.git)
+cd "Game Server Dashboard/pi-server"
+
+# Install all dependencies
+npm install
+```
+
+We also need to create a .env file in `pi-server` so that our system knows what path to take:
+
+```bash
+# Create and edit the .env file
+nano .env
+
+# Make sure to edit the <path-to-repo>
+SERVERS_PATH="<path-to-repo>/Game Server Dashboard/servers"
+SCRIPTS_PATH="<path-to-repo>/Game Server Dashboard/scripts"
+PORT=3001
+```
+
+Ensure that the program has sufficient permissions to run everything:
+
+```bash
+sudo usermod -aG docker $USER
+```
+
+After doing all of this, starting both the frontend and backend needs one command:
+
+```bash
+npm run start:all
+```
+
+> **Ensure that you read the [Creating a Server](#creating-a-server) section to enable your ports. You will be unable to join any game server until these network rules are correctly configured.**
 
 ## UI Components
 
@@ -18,53 +72,67 @@ The goal of this project is to allow for easily creatable multiplayer game serve
 The main interface features a side navigation bar and a dynamic header. The header includes a **[+ New Server]** button that triggers the creation workflow.
 
 1. **Server Dashboard**: Overview of all managed containers.
-2. **System Information**: Host-level telemetry (CPU, RAM, Disk) with 24-hour trends.
-3. **Logs**: Unified access to system and container-level output.
-4. **Global Settings**: Bulk power actions and system-wide configurations.
-5. **File Manager**: Integrated `monaco-editor` for direct configuration editing.
+2. **System Information**: Host-level telemetry (CPU, RAM, Disk) with 24-hour trends. (Not yet implemented)
+3. **Logs**: Unified access to system/container level outputs and errors. (Not yet implemented)
+4. **Global Settings**: Bulk power actions (such as mass restart or mass turn off) and system-wide configurations. (Not yet implemented)
+5. **File Manager**: A file manager inside the application that allows for easy modifying or downloading of server files. (Not yet implemented)
 
 ### Server Card & Statistics
 
 - **Dynamic Layouts**: Statistics modals use a factory to render specific widgets (e.g., Minecraft TPS).
-- **Fallback Mechanism**: If no specific layout exists, the system defaults to hardware-only metrics.
+- **Fallback Mechanism**: If no specific layout exists, the system defaults to hardware-only metrics received from the docker container it runs on.
 
----
+## Game Providers
 
-## Game Providers (Backend)
+A **Game Provider** acts as a specialized "translator" for the dashboard. While Docker can only report if a container is "online" or "offline," a Provider reaches inside the game's specific files or logs to extract live data like player counts or world progress.
 
-Providers act as translators between raw container data and the standardized JSON format used by the UI.
+### The BaseProvider
+
+The **BaseProvider** serves as the central access point and "router" for all services in the program. Instead of services needing to know about every individual game type, they call the BaseProvider. It coordinates the request by communicating with the **ProviderRegistry** to fetch the specific provider instance required for the task. This ensures that the rest of the application has a single, consistent way to interact with any game server.
+
+### The ProviderRegistry
+
+The **ProviderRegistry** is the storage hub for the system’s modularity. it maintains a mapped collection of all available game types and their corresponding provider classes. When the BaseProvider needs to perform an action for a specific game (like Minecraft or Satisfactory), the Registry provides the correct instance, allowing the system to remain flexible and easily expandable.
 
 ### Specific Game Providers
 
-Each provider must implement the `GameStatsProvider` interface:
+Since every game stores data differently, each requires a specific provider to extract and standardize its statistics (like player counts or world tiers). While these data-gathering functions are optional, implementing them allows the UI to display live, game-specific information beyond basic "Online/Offline" status.
 
-- `ping()`: Readiness check.
-- `getAllStats()`: Metric aggregation.
-- `getVersion()` / `playerCount()`: Identity and activity metadata.
+Each provider must implement the `GameProvider` interface:
 
----
+- `ping()`: Readiness check. Used to see if the server is "starting" or "stopping". If not implemented, it should default to `true`
+- `getAllStats()`: Metric aggregation. Used to display custom stats that the user wants to see. For example, Minecraft servers display ticks per second, entity counts, etc.
+- `getVersion()` / `playerCount()`: Identity and activity metadata. This data is used to display on the server card. The version can also be the map type (Such as ARK being different types of maps). If there is no version or specific map, you can simply return `Latest Version`.
 
-## Game Components (Frontend)
+### Game Components (Frontend)
 
-The visual layer determines how raw data and creation requirements are presented.
+The visual layer determines how raw data and creation requirements are presented to the user.
 
-### Base Components (The Factory)
+## Game Components
 
-`BaseComponents` serves as the orchestrator for:
+A **Game Component** is the specific UI "skin" for a game. While the backend provides the data, the component decides how to display it. For example, a Minecraft component might show a list of logged-in players, while a Satisfactory component displays the current Milestone or Phase.
 
-1. **Component Lookup**: Mapping `gameType` to specific renderers.
-2. **Creation Requirements**: Generating the necessary forms for a new server.
-3. **UI Helpers**: Providing standardized methods like `createDropdown` to maintain visual parity.
+### The BaseComponent
 
-### Architecture: The Unified Folder Pattern
+The **BaseComponent** serves as the primary interface for the frontend. Much like the BaseProvider on the backend, it acts as the "router" for all UI services. When a service or a modal needs to display a specific game's interface, it calls the Base Component and passes in a `gameType`. The Base Component then coordinates with the **ComponentRegistry** to retrieve the correct visual module.
 
-Each game type is moving toward a self-contained folder within the architecture:
+### The ComponentRegistry
 
-- **Manifest**: Defines the available versions, types (Forge, Fabric, etc.), and default ports.
-- **Icon**: The game-specific branding retrieved via `BaseComponent`.
-- **Requirements**: A functional mapping of the manifest to UI components (e.g., mapping the `versions` array to a `Dropdown`).
+The **ComponentRegistry** is the frontend's central repository. It stores and manages the collection of all available **Game Components**. When the Base Component requests a specific game type (like Minecraft or Satisfactory), the Registry provides the corresponding class and its manifest. This allows the frontend to dynamically load different server interfaces instantly without a page reload.
 
----
+## Adding a New Game
+
+Currently, adding a new game requires a manual process to link the backend logic with the frontend UI. Follow these steps to integrate a new game server:
+
+1. **Define the Game Type**: Add your new game to the `GAME_TYPE` array in `GameTypes.ts`. This string acts as the unique identifier across the entire application.
+2. **Register the Modules**: Add the game to both the `ProviderRegistry` (Backend) and the `ComponentRegistry` (Frontend). This allows the Base classes to "find" your game when requested.
+3. **Create the Game Directory**: Create a new folder inside `games/`. Within this folder, you must create:
+   - A **Provider Class** (implementing the interface `GameProvider`)
+   - A **Component Class** (implementing the interface `GameComponent`)
+4. **Prepare the Docker Template**: Add a `<game-name-here>.yml` file for the game into the `templates/` folder. Ensure the file uses variables for `CONTAINER_NAME` and `RAM` so the dashboard can inject these values dynamically.
+5. **Implement Logic (Optional)**:
+   - While returning default values will allow the server to "work," you can populate your Provider and Component code to return live statistics (like player counts or world progress) for a more interactive experience.
+   - Add a icon.png to the games folder in order to add a logo for the game server.
 
 ## Services
 
@@ -82,7 +150,7 @@ Handles persistence via `Config.ts`, managing the `server_config.json` database 
 
 ## Creating a Server
 
-In order to actually join some servers, there is a little configuration on your side that needs to happen. You will need to setup port forwarding on your router based on the game, and also the system you are hosting the server on has to open the port on its firewall settings to allow access.
+In order to actually join some servers, there is a little configuration on your side that needs to happen. You will need to setup port forwarding on your router based on the game, and also the system you are hosting the server on has to open the port on its firewall settings to allow access (Universal Firewall is great).
 
 ### Minecraft
 
