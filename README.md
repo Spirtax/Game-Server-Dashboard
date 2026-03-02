@@ -51,6 +51,13 @@ SCRIPTS_PATH="<path-to-repo>/Game Server Dashboard/scripts"
 PORT=3001
 ```
 
+You will also need to add your ip address to the ServiceConstants so your backend can connect with the front end.
+
+```bash
+# In src/services/ServiceConstants.ts, change this line
+export const API_BASE_URL = "http://<IP-ADDRESS>:3001"; // Change this to your own IP
+```
+
 Ensure that the program has sufficient permissions to run everything:
 
 ```bash
