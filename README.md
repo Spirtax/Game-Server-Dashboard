@@ -4,12 +4,6 @@
 
 The goal of this project is to allow for easily creatable multiplayer game servers by only needing a docker compose file for the game. The framework is a modular, Docker-centric management layer built with a Node.js backend and a React frontend.
 
-> An image of the current look of the server dashboard, with servers of different game types displayed:
-<img width="1918" height="957" alt="image" src="https://github.com/user-attachments/assets/79436236-e823-400a-9021-eff669452b10" />
-<br>
-> An image displaying the ease of creating a new game server with a user-friendly interface:
-<img width="611" height="606" alt="image" src="https://github.com/user-attachments/assets/2b2688d5-eafd-4f43-95c6-0b8919abd5c4" />
-
 **_*At the current moment, this project is aimed to work with ARM64 architecture (Such as a Raspberry pi). Future implementations will include x86_64, since lots of game servers are not designed for ARM64.*_**
 
 Currently, this project supports Minecraft and Satisfactory server deployments. While the system was originally architected for Minecraft, the recent addition of Satisfactory demonstrates the modular design of the platform. New game servers can be integrated easily by simply dropping in a standard Docker template, which can usually be found by looking online.
@@ -18,6 +12,20 @@ Currently, this project supports Minecraft and Satisfactory server deployments. 
 - **Protocol Translation**: Uses the **Provider Pattern** to map generic containers to game-specific logic (RCON, Query, etc.).
 - **Persistence & State**: Maintains a **Single Source of Truth (SSOT)** architecture via `server_config.json`.
 - **Dynamic UI Rendering**: Utilizes a **Factory Pattern** to inject specialized React components based on a `gameType`.
+
+### Server Management Dashboard
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/79436236-e823-400a-9021-eff669452b10" alt="Server Dashboard" width="100%">
+</p>
+
+<br>
+
+### Intuitive Server Creation
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/2b2688d5-eafd-4f43-95c6-0b8919abd5c4" alt="Create Server Interface" width="70%">
+</p>
 
 ## Running the Program
 
