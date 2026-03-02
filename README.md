@@ -6,7 +6,7 @@ The goal of this project is to allow for easily creatable multiplayer game serve
 
 > An image of the current look of the server dashboard, with servers of different game types displayed:
 <img width="1918" height="957" alt="image" src="https://github.com/user-attachments/assets/79436236-e823-400a-9021-eff669452b10" />
-
+<br>
 > An image displaying the ease of creating a new game server with a user-friendly interface:
 <img width="611" height="606" alt="image" src="https://github.com/user-attachments/assets/2b2688d5-eafd-4f43-95c6-0b8919abd5c4" />
 
