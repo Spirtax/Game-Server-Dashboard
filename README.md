@@ -65,6 +65,9 @@ npm run start:all
 
 > **Ensure that you read the [Creating a Server](#creating-a-server) section to enable your ports. You will be unable to join any game server until these network rules are correctly configured.**
 
+After running these commands, you just need to go to website using port 5173:
+`<ip-address>:5173`
+
 ## UI Components
 
 ### Dashboard & Navigation
