@@ -4,10 +4,10 @@
 
 The goal of this project is to allow for easily creatable multiplayer game servers by only needing a docker compose file for the game. The framework is a modular, Docker-centric management layer built with a Node.js backend and a React frontend.
 
-**An image of the current look of the server dashboard, with servers of different game types displayed:**
+> An image of the current look of the server dashboard, with servers of different game types displayed:
 <img width="1918" height="957" alt="image" src="https://github.com/user-attachments/assets/79436236-e823-400a-9021-eff669452b10" />
 
-**An image displaying the ease of creating a new game server with a user-friendly interface:**
+> An image displaying the ease of creating a new game server with a user-friendly interface:
 <img width="611" height="606" alt="image" src="https://github.com/user-attachments/assets/2b2688d5-eafd-4f43-95c6-0b8919abd5c4" />
 
 **_*At the current moment, this project is aimed to work with ARM64 architecture (Such as a Raspberry pi). Future implementations will include x86_64, since lots of game servers are not designed for ARM64.*_**
