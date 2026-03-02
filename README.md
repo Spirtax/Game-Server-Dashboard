@@ -21,6 +21,14 @@ Currently, this project supports Minecraft and Satisfactory server deployments. 
 
 <br>
 
+### Server Statistics Modal
+
+<p align="center">
+  <img width="873" height="532" alt="image" src="https://github.com/user-attachments/assets/1c8ae92f-9528-4a04-8612-5b7467d0eccb" />
+</p>
+
+<br>
+
 ### Intuitive Server Creation
 
 <p align="center">
