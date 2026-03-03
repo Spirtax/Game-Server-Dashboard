@@ -114,6 +114,8 @@ The main interface features a side navigation bar and a dynamic header. The head
 - **Dynamic Layouts**: Statistics modals use a factory to render specific widgets (e.g., Minecraft TPS).
 - **Fallback Mechanism**: If no specific layout exists, the system defaults to hardware-only metrics received from the docker container it runs on.
 
+# System Architecture
+
 ## Game Providers
 
 A **Game Provider** acts as a specialized "translator" for the dashboard. While Docker can only report if a container is "online" or "offline," a Provider reaches inside the game's specific files or logs to extract live data like player counts or world progress.
