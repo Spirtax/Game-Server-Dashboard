@@ -1,6 +1,9 @@
+import "dotenv/config";
+
 // Network Constants
-export const API_BASE_URL = "http://<IP-ADDRESS>:3001"; // Change this to your own IP
-export const API_PORT = "3001";
+const base = process.env.API_BASE_URL || "http://localhost";
+export const PORT = process.env.PORT || "3001";
+export const API_BASE_URL = `${base}:${PORT}`;
 
 // Route Constants
 export const SERVER_URL = "server";
