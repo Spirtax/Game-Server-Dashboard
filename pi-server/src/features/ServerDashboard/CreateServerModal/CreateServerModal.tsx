@@ -65,7 +65,6 @@ export default function CreateServerModal({
     }
 
     setLoading(true);
-    console.log(finalRequirements);
     try {
       const result = await createServer(
         serverName,

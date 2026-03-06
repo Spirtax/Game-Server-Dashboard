@@ -219,7 +219,7 @@ In addition to this, if the system is running on **ARM64** (such as a Raspberry 
 
 ## Future Implementation and Bug Fixes
 
-If there are no servers, there should be text saying "No servers".
+Make the tasks clickable when theyre created, and show the most recent logs. Also fix the hard coded "create-{job-id}".
 
 Adding functionality to the settings modal.
 

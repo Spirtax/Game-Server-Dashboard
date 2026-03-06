@@ -17,6 +17,7 @@ export interface GameProvider {
     requirements: Record<string, string>,
     serverPath: string,
     dataPath: string,
+    onUpdate?: (msg: string | Buffer) => void,
   ): Promise<void>;
 
   // The ping method is used to check if the server is online. If we get a ping back from the server, return true else false.

@@ -6,6 +6,9 @@ import { Settings, Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { isValidFileSystemName } from "@/utils/regexUtils";
 import "./ServerSettingsModal.css";
+import { deleteServer } from "./ServerSettingsService";
+import { fetchServers } from "@/pages/ServerDashboard/ServerDashboardService";
+import ConfirmationModal from "./utilities/ConfirmDeleteModal";
 
 type SettingsModalProps = {
   isOpen: boolean;
@@ -24,6 +27,7 @@ export default function SettingsModal({
 }: SettingsModalProps) {
   const [settingsName, setSettingsName] = useState(name);
   const [settingsRam, setSettingsRam] = useState("2048");
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -36,8 +40,10 @@ export default function SettingsModal({
     // Internal update logic
   };
 
-  const handleDelete = () => {
-    // Internal delete logic
+  const handleDelete = async () => {
+    await deleteServer(name);
+    setIsDeleteModalOpen(false);
+    setIsModalOpen();
   };
 
   return (
@@ -95,7 +101,7 @@ export default function SettingsModal({
         <div className="settings-modal-footer">
           <Button
             className="delete-button"
-            onClick={handleDelete}
+            onClick={() => setIsDeleteModalOpen(true)}
             width="40px"
             height="36px"
           >
@@ -123,6 +129,12 @@ export default function SettingsModal({
           </div>
         </div>
       </div>
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleDelete}
+        targetName={name}
+      />
     </Modal>
   );
 }

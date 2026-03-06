@@ -4,8 +4,9 @@ export const API_PORT = "3001";
 
 // Route Constants
 export const SERVER_URL = "server";
-export const MANAGE_URL = "service";
+export const SERVICE_URL = "service";
 export const SYSTEM_URL = "system";
+export const JOB_URL = "jobs";
 
 // Hardware & System Constants
 export const CPU_CORES = 4;

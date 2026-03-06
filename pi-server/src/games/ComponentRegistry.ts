@@ -1,6 +1,7 @@
 import { GAME_TYPE, type GameType } from "@/types/GameTypes";
 import { MinecraftComponents } from "./minecraft/MinecraftComponents";
 import { SatisfactoryComponents } from "./satisfactory/SatisfactoryComponents";
+import { ArkComponents } from "./ark/ArkComponents";
 
 /*
  * The component registry acts as a central hub for
@@ -9,7 +10,7 @@ import { SatisfactoryComponents } from "./satisfactory/SatisfactoryComponents";
 export const ComponentRegistry: Record<GameType, any> = {
   [GAME_TYPE.MINECRAFT]: MinecraftComponents,
   [GAME_TYPE.DEFAULT]: undefined,
-  [GAME_TYPE.ARK]: undefined,
+  [GAME_TYPE.ARK]: ArkComponents,
   [GAME_TYPE.RUST]: undefined,
   [GAME_TYPE.VALHEIM]: undefined,
   [GAME_TYPE.SATISFACTORY]: SatisfactoryComponents,

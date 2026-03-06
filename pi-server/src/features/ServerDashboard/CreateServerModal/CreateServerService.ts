@@ -10,7 +10,7 @@ export const createServer = async (
 ) => {
   try {
     const response = await axios.post(
-      `${CONSTANTS.API_BASE_URL}/${CONSTANTS.MANAGE_URL}/create`,
+      `${CONSTANTS.API_BASE_URL}/${CONSTANTS.SERVICE_URL}/manage/create`,
       {
         name,
         ram: ram.toString(),

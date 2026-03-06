@@ -33,7 +33,7 @@ export class MinecraftProvider implements GameProvider {
       {
         CONTAINER_NAME: name,
         RAM: ram,
-        TYPE: gameRequirements.type || "PAPER",
+        TYPE: gameRequirements.type.toUpperCase() || "PAPER",
         VERSION: gameRequirements.version || "1.21.9",
       },
     );

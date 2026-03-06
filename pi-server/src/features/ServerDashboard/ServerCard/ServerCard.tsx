@@ -44,9 +44,9 @@ export default function ServerCard(
   };
 
   const getTitleSize = (name: string) => {
-    if (name.length > 20) return "16px";
-    if (name.length > 15) return "20px";
-    if (name.length > 10) return "24px";
+    if (name.length > 20) return "14px";
+    if (name.length > 15) return "18px";
+    if (name.length > 10) return "22px";
     return "26px";
   };
 

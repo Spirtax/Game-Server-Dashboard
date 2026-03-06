@@ -5,6 +5,7 @@ import { fetchServers } from "./ServerDashboardService";
 import type { ServerCardProps } from "@/types/ServerCardTypes";
 import Header from "@/components/Header/Header";
 import CreateServerButton from "@/features/ServerDashboard/CreateServerButton/CreateServerButton";
+import JobStatusBadge from "@/features/ServerDashboard/JobStatusBadge/JobStatusBadge";
 
 export default function ServerDashboard() {
   const [servers, setServers] = useState<ServerCardProps[]>([]);
@@ -26,12 +27,16 @@ export default function ServerDashboard() {
   if (loading)
     return <div className="flex-center h-full">Loading Servers...</div>;
 
+  if (servers.length == 0)
+    return <div className="flex-center h-full">No servers yet...</div>;
+
   return (
     <>
       <Header
         pageName="Server Dashboard"
         rightChildren={<CreateServerButton />}
       />
+      <JobStatusBadge />
       <div className="server-grid">
         {servers.map((server: ServerCardProps) => (
           <ServerCard

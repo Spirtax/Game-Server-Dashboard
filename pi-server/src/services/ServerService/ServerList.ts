@@ -1,93 +1,95 @@
 import Docker from "dockerode";
+import fs from "fs/promises";
+import path from "path";
 import { ConfigService } from "../data/Config";
 import { BaseProvider } from "@/games/BaseProvider";
 import { type GameType, GAME_TYPE } from "@/types/GameTypes";
 
-const docker = new Docker();
+const docker = new Docker({ socketPath: "/var/run/docker.sock" });
 
 export class ServerListService {
+  private static readonly SERVERS_ROOT =
+    process.env.SERVERS_PATH || path.resolve(process.cwd(), "../servers");
+
   public static async listServers() {
+    const folders = await fs.readdir(this.SERVERS_ROOT);
     const containers = await docker.listContainers({ all: true });
     const persistentData = ConfigService.getFullConfig();
 
     const serverStats = await Promise.all(
-      containers.map(async (info) => {
-        const container = docker.getContainer(info.Id);
-        const inspect = await container.inspect();
-        const containerName = info.Names[0].replace("/", "");
-        const containerStatus = inspect.State.Status.toLowerCase();
+      folders.map(async (folderName) => {
+        const serverPath = path.join(this.SERVERS_ROOT, folderName);
+        const stats = await fs.stat(serverPath);
 
-        const serverConfig = persistentData[containerName] || {};
+        if (!stats.isDirectory()) return null;
+
+        const serverConfig = persistentData[folderName] || {};
         const gameType: GameType = serverConfig.gameType as GameType;
+
+        const info = containers.find((c) =>
+          c.Names.some((n) => n.replace("/", "") === folderName),
+        );
+
+        let containerStatus = "offline";
+        let containerId = null;
+        let inspect = null;
+
+        if (info) {
+          containerId = info.Id;
+          const container = docker.getContainer(info.Id);
+          inspect = await container.inspect();
+          containerStatus = inspect.State.Status.toLowerCase();
+        }
+
         const provider = gameType
           ? BaseProvider.getProvider(gameType)
           : undefined;
-
-        let version = "Unknown Version";
-        if (provider) {
-          version =
-            (await provider.getVersion(containerName)) || "Unknown Version";
-        }
-
+        let version = serverConfig.version || "Unknown Version";
         let startTime = serverConfig.startTime || null;
         let displayPlayerCount = `0/${serverConfig.maxPlayerCount || 0}`;
-
-        const portKey =
-          gameType === GAME_TYPE.SATISFACTORY ? "7777/udp" : "25565/tcp";
-        const portBindings =
-          inspect.NetworkSettings.Ports[portKey] ||
-          Object.values(inspect.NetworkSettings.Ports)[0];
-        const hostPort = portBindings?.[0]?.HostPort
-          ? parseInt(portBindings[0].HostPort)
-          : null;
-
+        let hostPort = null;
         let status = this.mapStatus(containerStatus);
+
+        if (inspect) {
+          const portKey =
+            gameType === GAME_TYPE.SATISFACTORY ? "7777/udp" : "25565/tcp";
+          const portBindings =
+            inspect.NetworkSettings.Ports[portKey] ||
+            Object.values(inspect.NetworkSettings.Ports)[0];
+          hostPort = portBindings?.[0]?.HostPort
+            ? parseInt(portBindings[0].HostPort)
+            : null;
+        }
 
         if (containerStatus === "running" && hostPort && provider) {
           status = "starting";
-
           const isPingable = await BaseProvider.ping(gameType, hostPort);
+
           if (isPingable) {
             status = "online";
-
-            const p = await provider.getPlayerCount(containerName);
+            const p = await provider.getPlayerCount(folderName);
             displayPlayerCount = `${p.playerCount}/${p.playerCountMax}`;
+            version = (await provider.getVersion(folderName)) || version;
 
-            if (!startTime) {
-              startTime = Date.now().toString();
-            }
+            if (!startTime) startTime = Date.now().toString();
 
-            const shouldUpdateVersion =
-              !serverConfig.version ||
-              serverConfig.version === "Unknown Version";
-            const shouldUpdateMaxPlayers =
-              !serverConfig.maxPlayerCount ||
-              serverConfig.maxPlayerCount === "0";
-            const isNewStartTime = startTime !== serverConfig.startTime;
-
-            if (
-              shouldUpdateVersion ||
-              shouldUpdateMaxPlayers ||
-              isNewStartTime
-            ) {
-              ConfigService.updateServer(containerName, {
-                version: version,
-                maxPlayerCount: p.playerCountMax.toString(),
-                startTime: startTime,
-              });
-            }
+            ConfigService.updateServer(folderName, {
+              version: version,
+              maxPlayerCount: p.playerCountMax.toString(),
+              startTime: startTime,
+            });
           } else {
-            this.resetServerUptime(containerName);
+            this.resetServerUptime(folderName);
             startTime = null;
           }
-        } else if (containerStatus !== "running") {
-          this.resetServerUptime(containerName);
+        } else {
+          this.resetServerUptime(folderName);
           startTime = null;
         }
 
         return {
-          id: info.Id,
-          name: containerName,
+          id: containerId,
+          name: folderName,
           status,
           port: hostPort,
           startTime,
@@ -99,7 +101,7 @@ export class ServerListService {
       }),
     );
 
-    return serverStats;
+    return serverStats.filter(Boolean);
   }
 
   private static resetServerUptime(containerName: string) {
@@ -108,8 +110,6 @@ export class ServerListService {
 
   private static mapStatus(dockerStatus: string): string {
     if (dockerStatus === "running") return "starting";
-    if (["exiting", "stopping", "exited"].includes(dockerStatus))
-      return "offline";
     return "offline";
   }
 }

@@ -29,12 +29,14 @@ const DEFAULT_LAYOUTS: Record<
   [GAME_TYPE.ARK]: [],
   [GAME_TYPE.RUST]: [],
   [GAME_TYPE.VALHEIM]: [],
+  [GAME_TYPE.SATISFACTORY]: [],
 };
 
 /*
  * The ConfigService is responsible for managing persistent server configuration data by allowing other services to access server_config.json
+ * Whenever a server goes offline and we are no longer able to ping it and request data, we need some way to store data that should stay such as a
+ * max player count, a version, etc.
  */
-
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_PATH = path.join(__dirname, "./server_config.json");
 

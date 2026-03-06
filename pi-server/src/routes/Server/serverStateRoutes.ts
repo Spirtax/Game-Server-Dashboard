@@ -1,11 +1,13 @@
 import { Router } from "express";
-import { StateManagerService } from "@/services/ServerService/ServerStateManager";
+import { ServerStateManagerService } from "@/services/ServerService/ServerStateManager";
 
 const router = Router();
 
 router.get("/:name", async (req, res) => {
   try {
-    const state = await StateManagerService.getServerState(req.params.name);
+    const state = await ServerStateManagerService.getServerState(
+      req.params.name,
+    );
     if (!state) return res.status(404).json({ error: "Server not found" });
     res.json(state);
   } catch (err: any) {
@@ -18,11 +20,11 @@ router.post("/:name/control", async (req, res) => {
   const { action } = req.body;
 
   try {
-    await StateManagerService.setPendingState(name, action);
+    await ServerStateManagerService.setPendingState(name, action);
 
     res.json({ success: true, message: `Action ${action} initiated.` });
 
-    StateManagerService.performAction(name, action).catch((err) => {
+    ServerStateManagerService.performAction(name, action).catch((err) => {
       console.error("Background Docker action failed:", err);
     });
   } catch (err: any) {

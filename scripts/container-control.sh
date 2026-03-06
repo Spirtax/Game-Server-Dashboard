@@ -21,7 +21,7 @@ cd "$SERVER_PATH" || exit 1
 
 case $ACTION in
   create)
-    docker compose create
+    docker compose create --pull never
     ;;
   start)
     docker compose up -d

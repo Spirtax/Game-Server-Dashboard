@@ -20,15 +20,24 @@ export class SatisfactoryProvider implements GameProvider {
     gameRequirements: Record<string, string>,
     serverPath: string,
     _dataPath: string,
+    onUpdate: (msg: string | Buffer) => void,
   ): Promise<void> {
     if (await fs.stat(serverPath).catch(() => null)) {
+      onUpdate("Cleaning up existing directory...");
       await fs.rm(serverPath, { recursive: true, force: true });
     }
 
     const repoUrl =
       "https://github.com/sa-shiro/Satisfactory-Dedicated-Server-ARM64-Docker.git";
-    await execAsync(`git clone ${repoUrl} "${serverPath}"`);
+    onUpdate("Cloning ARM64 Satisfactory repository...");
+    await BaseProvider.executeCommand(
+      "git",
+      ["clone", repoUrl, `"${serverPath}"`],
+      process.cwd(),
+      onUpdate,
+    );
 
+    onUpdate("Generating docker-compose configuration...");
     const composeContent = await BaseProvider.generateFromTemplate(
       GAME_TYPE.SATISFACTORY,
       {
@@ -45,16 +54,22 @@ export class SatisfactoryProvider implements GameProvider {
     await fs.mkdir(gameDataPath, { recursive: true });
     await fs.mkdir(configPath, { recursive: true });
 
-    await execAsync(
-      `sudo chown -R 1000:1000 "${gameDataPath}" "${configPath}"`,
+    onUpdate("Setting file permissions...");
+    await BaseProvider.executeCommand(
+      "sudo",
+      ["chown", "-R", "1000:1000", `"${gameDataPath}"`, `"${configPath}"`],
+      serverPath,
+      onUpdate,
+    );
+    await BaseProvider.executeCommand(
+      "chmod",
+      ["+x", "build.sh", "init-server.sh", "run.sh"],
+      serverPath,
+      onUpdate,
     );
 
-    await execAsync(`chmod +x build.sh init-server.sh run.sh`, {
-      cwd: serverPath,
-    });
-
-    await execAsync(`sh build.sh`, { cwd: serverPath });
-    await execAsync(`docker compose up -d`, { cwd: serverPath });
+    onUpdate("Executing build script (this may take a while)...");
+    await BaseProvider.executeCommand("sh", ["build.sh"], serverPath, onUpdate);
   }
 
   public async ping(_host: string, port: number): Promise<boolean> {

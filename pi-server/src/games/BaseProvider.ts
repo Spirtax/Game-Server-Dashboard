@@ -6,6 +6,8 @@ import fs from "fs/promises";
 import "dotenv/config";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import { JobRunner } from "@/services/jobs/JobRunner";
+import { spawn } from "child_process";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -30,22 +32,70 @@ export class BaseProvider {
     name: string,
     ram: number,
     gameRequirements: Record<string, string>,
-  ): Promise<void> {
+  ): Promise<string> {
     const provider = this.getProvider(gameType);
+
     if (!provider) {
       throw new Error(
         `Execution failed: No provider found for game type "${gameType}".`,
       );
     }
 
-    const { serverPath, dataPath } = await this.prepareServerFolder(name);
-    return await provider.createServer(
-      name,
-      ram,
-      gameRequirements,
-      serverPath,
-      dataPath,
-    );
+    const jobId = `create-${name}`;
+    await JobRunner.execute(jobId, async (onUpdate) => {
+      onUpdate("Creating server folder...");
+      const { serverPath, dataPath } = await this.prepareServerFolder(name);
+
+      onUpdate(`Downloading server files for ${gameType}...`);
+
+      await provider.createServer(
+        name,
+        ram,
+        gameRequirements,
+        serverPath,
+        dataPath,
+        onUpdate,
+      );
+    });
+
+    return jobId;
+  }
+
+  /**
+   * Executes a shell command and pipes output to the job logger
+   */
+  public static async executeCommand(
+    command: string,
+    args: string[],
+    cwd: string,
+    onUpdate: (msg: string | Buffer) => void,
+  ): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const child = spawn(command, args, {
+        cwd,
+        shell: true,
+      });
+
+      child.stdout.on("data", (data) => {
+        onUpdate(data);
+      });
+
+      child.stderr.on("data", (data) => {
+        onUpdate(data);
+      });
+
+      child.on("close", (code) => {
+        if (code === 0) {
+          resolve();
+        } else {
+          reject(new Error(`Process "${command}" exited with code ${code}`));
+        }
+      });
+
+      child.on("error", (err) => {
+        reject(err);
+      });
+    });
   }
 
   /*
