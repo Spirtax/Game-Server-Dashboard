@@ -1,7 +1,7 @@
 import "dotenv/config";
 
 // Network Constants
-export const API_BASE_URL = "http://100.73.175.16:3001";
+export const API_BASE_URL = "http://<YOUR-IP-HERE>:3001";
 export const API_PORT = "3001";
 
 // Route Constants
